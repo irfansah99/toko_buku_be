@@ -1,0 +1,1 @@
+Repository ini merupakan proyek pribadi yang berfokus pada pengembangan backend menggunakan bahasa pemrograman Go (Golang). Proyek ini dibuat sebagai sarana belajar dan menerapkan konsep-konsep Go melalui implementasi langsung, sekaligus mengeksplorasi berbagai pendekatan dan praktik dalam pengembangan aplikasi backend.
