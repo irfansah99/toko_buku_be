@@ -2,6 +2,9 @@ package main
 
 import (
 	"backend-toko-buku/config"
+	"backend-toko-buku/database"
+
+	"backend-toko-buku/internal/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,8 +16,11 @@ func main() {
 
 	//inisialiasai Gin
 	router := gin.Default()
+	db := database.InitDB()
+	// rdb := config.RedisClient
 
-	//membuat route dengan method GET
+	// cache := cache.NewRedisCache(rdb)
+	db.AutoMigrate(&models.User{})
 	router.GET("/", func(c *gin.Context) {
 
 		//return response JSON
