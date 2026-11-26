@@ -4,31 +4,31 @@ import (
 	"backend-toko-buku/config"
 	"backend-toko-buku/database"
 
+	"backend-toko-buku/internal/controllers"
 	"backend-toko-buku/internal/models"
-
-	"github.com/gin-gonic/gin"
+	"backend-toko-buku/internal/repository"
+	"backend-toko-buku/internal/routes"
+	"backend-toko-buku/internal/services/auth"
+	"backend-toko-buku/internal/services/hash"
 )
 
 func main() {
 
-	//load config .env
+
 	config.LoadEnv()
 
-	//inisialiasai Gin
-	router := gin.Default()
 	db := database.InitDB()
-	// rdb := config.RedisClient
 
-	// cache := cache.NewRedisCache(rdb)
+
 	db.AutoMigrate(&models.User{})
-	router.GET("/", func(c *gin.Context) {
+	hasher := &hash.BcryptHasher{}
+	userRepo := repository.NewUserRepository(db)
 
-		//return response JSON
-		c.JSON(200, gin.H{
-			"message": "Hello World!",
-		})
-	})
+	registerService := auth.NewRegisterService(userRepo, hasher)
 
-	//mulai server
-	router.Run(":" + config.GetEnv("APP_PORT", "3000"))
+	registerController := controllers.NewRegisterController(registerService)
+
+	r := routes.SetupRouter(registerController)
+
+	r.Run(":" + config.GetEnv("APP_PORT", "3000"))
 }
